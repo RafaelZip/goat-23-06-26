@@ -1,0 +1,31 @@
+.container01 {
+    max-width: 400px;
+    margin: 0% auto;
+    border: 1px solid rgb(0, 0, 0);
+}
+
+h1 {
+    text-align: center;
+    margin: 20px 0 0 0;
+    font-size: 1.25em;
+    font-weight: normal;
+}
+
+.flex {
+    display: flex;
+    
+}
+
+.flex-wrap {
+    flex-wrap: wrap;
+}
+
+.row {
+    flex-direction: row;
+}
+
+.container {
+    max-width: 400px;
+    margin: 0% auto;
+    border: 1px solid rgb(0, 0, 0);  
+}
