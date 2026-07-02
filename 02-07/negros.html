@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cronômetro</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+    background:#111827;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+    color:white;
+}
+
+.container{
+    background:#1f2937;
+    padding:40px;
+    border-radius:20px;
+    text-align:center;
+    width:400px;
+    box-shadow:0 0 25px rgba(0,0,0,.5);
+}
+
+h1{
+    margin-bottom:20px;
+}
+
+#display{
+    font-size:45px;
+    font-weight:bold;
+    margin-bottom:30px;
+    color:#38bdf8;
+}
+
+button{
+    padding:12px 18px;
+    margin:5px;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+    font-size:15px;
+    transition:.2s;
+}
+
+button:hover{
+    transform:scale(1.05);
+}
+
+.start{background:#22c55e;color:white;}
+.pause{background:#f59e0b;color:white;}
+.reset{background:#ef4444;color:white;}
+.lap{background:#3b82f6;color:white;}
+
+ul{
+    list-style:none;
+    margin-top:25px;
+    max-height:200px;
+    overflow-y:auto;
+    text-align:left;
+}
+
+li{
+    padding:8px;
+    border-bottom:1px solid #374151;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<h1>Cronômetro</h1>
+
+<div id="display">00:00:00.000</div>
+
+<button class="start" onclick="start()">Iniciar</button>
+<button class="pause" onclick="pause()">Pausar</button>
+<button class="reset" onclick="reset()">Reiniciar</button>
+<button class="lap" onclick="lap()">Volta</button>
+
+<ul id="laps"></ul>
+
+</div>
+
+<script>
+let startTime = 0;
+let elapsedTime = 0;
+let timer;
+let running = false;
+
+const display = document.getElementById("display");
+const laps = document.getElementById("laps");
+
+function update(){
+
+    const time = Date.now() - startTime + elapsedTime;
+
+    let ms = time % 1000;
+    let sec = Math.floor(time / 1000) % 60;
+    let min = Math.floor(time / 60000) % 60;
+    let hr = Math.floor(time / 3600000);
+
+    display.textContent =
+        String(hr).padStart(2,"0")+":"+
+        String(min).padStart(2,"0")+":"+
+        String(sec).padStart(2,"0")+"."+
+        String(ms).padStart(3,"0");
+}
+
+function start(){
+
+    if(running) return;
+
+    running = true;
+    startTime = Date.now();
+
+    timer = setInterval(update,10);
+}
+
+function pause(){
+
+    if(!running) return;
+
+    running = false;
+    clearInterval(timer);
+
+    elapsedTime += Date.now() - startTime;
+}
+
+function reset(){
+
+    running = false;
+    clearInterval(timer);
+
+    startTime = 0;
+    elapsedTime = 0;
+
+    display.textContent = "00:00:00.000";
+    laps.innerHTML = "";
+}
+
+function lap(){
+
+    if(!running) return;
+
+    const li = document.createElement("li");
+    li.textContent = display.textContent;
+
+    laps.prepend(li);
+}
+</script>
+
+</body>
+</html>
